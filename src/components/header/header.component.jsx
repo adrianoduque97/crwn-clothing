@@ -4,7 +4,10 @@ import {ReactComponent as Logo} from '../../assets/crown.svg'
 import {auth} from '../../firebase/firebase.utils'
 import './header.style.scss'
 
-const Header = ({currentUser}) =>(
+const Header = (props) =>{
+
+    const {currentUser} = props
+    return(
     <div className='header'>
          <Link to='/'className='logo-container'>
              <Logo className='logo'></Logo>
@@ -26,6 +29,7 @@ const Header = ({currentUser}) =>(
                  }
          </div>
     </div>
-)
+    )
+}
 
 export default Header
