@@ -1,5 +1,6 @@
 # E-Commerce React
 E-commerce shop implemnted using REACT, Firebase, Stripe API linkage
+Redux and Hooks included
 
 ## Available Scripts
 
