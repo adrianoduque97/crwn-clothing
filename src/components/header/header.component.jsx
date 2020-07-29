@@ -5,9 +5,9 @@ import {connect} from 'react-redux'
 import {auth} from '../../firebase/firebase.utils'
 import './header.style.scss'
 
-const Header = (props) =>{
+const Header = ({currentUser}) =>{
 
-    const {currentUser} = props
+    //const {currentUser} = props
     return(
     <div className='header'>
          <Link to='/'className='logo-container'>
