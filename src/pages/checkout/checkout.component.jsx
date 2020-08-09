@@ -5,7 +5,7 @@ import {selectCartItems, selectCartTotal} from '../../redux/cart/cart.selectors'
 import CheckOutItem from '../../components/checkout-item/checkout-item.component'
 import './checkout.styles.scss'
 
-const CheckOutPage = ({cartItems, cartTotal}) => (
+const CheckOutPage = ({cartItems, cartTotal, dispatch}) => (
     <div className='checkout-page'>
         <div className="checkout-header">
             <div className="header-block">
