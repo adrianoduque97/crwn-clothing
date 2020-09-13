@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {ReactComponent as Logo} from '../../assets/crown.svg'
 import {connect} from 'react-redux'
 import {auth} from '../../firebase/firebase.utils'
@@ -8,39 +7,40 @@ import {selectCurrentUser} from '../../redux/user/user.selectors'
 import {selectCartHidden} from '../../redux/cart/cart.selectors'
 import  CartIcon  from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
-import './header.style.scss'
+
+import {HeaderContainer, LogoContainer, OptionsContainer, OptionLink} from './header.styles'
 
 const Header = ({currentUser, hidden}) =>{
 
     //const {currentUser} = props
     return(
-    <div className='header'>
-         <Link to='/'className='logo-container'>
-             <Logo className='logo'></Logo>
-         </Link>
+    <HeaderContainer >
+         <LogoContainer to='/'>
+             <Logo></Logo>
+         </LogoContainer>
 
-         <div className="options">
-             <Link className='option' to='/shop'>
+         <OptionsContainer >
+             <OptionLink  to='/shop'>
                  SHOP 
-             </Link>
+             </OptionLink>
 
-             <Link className='option' to='/shop'>
+             <OptionLink  to='/shop'>
                  CONTACT 
-             </Link>
+             </OptionLink>
                  {
                      currentUser? (
-                     <div className="option" onClick={()=> auth.signOut()}> SIGN OUT</div> 
+                     <OptionLink as="div" onClick={()=> auth.signOut()}> SIGN OUT</OptionLink> 
                      ):(
-                     <Link className="option"  to='/signin'>SIGNIN</Link>
+                     <OptionLink   to='/signin'>SIGNIN</OptionLink>
                      )
                  }
             <CartIcon/>
-         </div>
+         </OptionsContainer>
          {
              hidden? null : (<CartDropdown></CartDropdown>)
          }
 
-    </div>
+    </HeaderContainer>
     )
 }
 
