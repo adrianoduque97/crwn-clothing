@@ -17,10 +17,7 @@ var firebaseConfig = {
     if(!userAuth) return;
 
     const userRef = firestore.doc(`users/${userAuth.uid}`)
-    const collectionsRef = firestore.collection('users')
     const snapShot = await  userRef.get()
-    const collectionSnapShot = await  collectionsRef.get()
-    console.log({collection: collectionSnapShot.docs.map(x => x.data())})
 
     if(!snapShot.exists){
       const {displayName, email} = userAuth
@@ -42,6 +39,20 @@ var firebaseConfig = {
     }
     return userRef
   }
+
+
+export const addCollectionAndDocuments= async (collectionKey, objectsToAdd) =>{
+  const collectionRef = firestore.collection(collectionKey)
+
+  const batch = firestore.batch()
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc()
+    batch.set(newDocRef,obj)
+  })
+
+  await batch.commit()
+}
+
 
 firebase.initializeApp(firebaseConfig)
 
