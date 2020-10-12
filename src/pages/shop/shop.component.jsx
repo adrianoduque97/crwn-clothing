@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
@@ -12,22 +12,19 @@ import WithSpinner from '../../HOC/with-spinner/with-spinner.component'
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
-class ShopPage extends React.Component{
+const ShopPage = ({match, isFetching, isLoaded, fetchCollectionsStartAsync}) =>{
  
-    componentDidMount(){
-        const {fetchCollectionsStartAsync} = this.props
+    useEffect(()=>{
         fetchCollectionsStartAsync()
-    }
-    render(){
-        const {match} = this.props
-        const {isFetching, isLoaded} = this.props
+    },[fetchCollectionsStartAsync])
+
+
         return(
             <div className="shop-page">
                 <Route exact path={`${match.path}`} render={(props)=> <CollectionsOverviewWithSpinner isLoading={isFetching} {...props}/>}/>
                 <Route  path = {`${match.path}/:collectionId`}  render={(props)=> <CollectionPageWithSpinner isLoading={!isLoaded} {...props}/>}/>
             </div>
         )
-    }
 }
 
 const mapStateToProps = createStructuredSelector({

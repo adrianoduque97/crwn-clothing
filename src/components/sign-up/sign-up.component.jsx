@@ -1,26 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
 import FormImput from '../form-input/form-input.component'
 import CustomButton from '../custom-button/custom-boton.component'
 
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
 
 
-class SignUp extends React.Component {
-    constructor() {
-        super()
+const SignUp = () =>{
+ 
+    const [userInformation, setInformation] = useState({displayName:'', email:'', password:'', confirmPassword:''})
+    const { displayName, email, password, confirmPassword } = userInformation
 
-        this.state = {
-            displayName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        }
-
-    }
-
-    handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        const { displayName, email, password, confirmPassword } = this.state
         if (password !== confirmPassword) {
             alert("Passwords don't match")
             return
@@ -30,42 +21,36 @@ class SignUp extends React.Component {
             const { user } = await auth.createUserWithEmailAndPassword(email, password)
 
             await createUserProfileDocument(user, { displayName })
-
-            this.setState({
+            setInformation({
                 displayName: '',
                 email: '',
                 password: '',
                 confirmPassword: ''
 
-            })
+            })  
         } catch (e) {
             console.log(e)
         }
-
-
     }
 
-    handleChange = event =>{
+    const handleChange = event =>{
         const {name, value} = event.target
-        this.setState({[name]:value})
+        setInformation({...userInformation,[name]:value})
     }
 
-
-    render() {
-        const { displayName, email, password, confirmPassword } = this.state
         return (
             <div className="sig-up">
                 <h2 className="title">
                     Idont have an account
                 </h2>
                 <span>sign up with email and password</span>
-                <form action="" className="sign-up-form" onSubmit={this.handleSubmit}>
+                <form action="" className="sign-up-form" onSubmit={handleSubmit}>
 
                     <FormImput
                         type="text"
                         name="displayName"
                         value={displayName}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label='Display Name'
                         required
                     />
@@ -73,7 +58,7 @@ class SignUp extends React.Component {
                         type="email"
                         name="email"
                         value={email}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label='Email'
                         required
                     />
@@ -81,7 +66,7 @@ class SignUp extends React.Component {
                         type="password"
                         name="password"
                         value={password}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label='Password'
                         required
                     />
@@ -89,7 +74,7 @@ class SignUp extends React.Component {
                         type="password"
                         name="confirmPassword"
                         value={confirmPassword}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label='Confirm Password'
                         required
                     />
@@ -97,7 +82,6 @@ class SignUp extends React.Component {
                 </form>
             </div>
         )
-    }
 }
 
 export default SignUp

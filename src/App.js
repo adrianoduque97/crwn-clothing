@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux'
@@ -13,37 +13,28 @@ import Header from './components/header/header.component'
 import {auth , createUserProfileDocument} from './firebase/firebase.utils'
 
 
-class  App extends React.Component{
+const  App = ({setCurrentUser, currentUser}) =>{
 
-  
-  unsuscribeFromAuth = null;
-
-  componentDidMount(){
-    const {setCurrentUser} = this.props
-
-    this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  useEffect(()=>{
+    auth.onAuthStateChanged(async userAuth => {
       
-      if(userAuth){
-        const userRef = await createUserProfileDocument(userAuth)
-       
-        userRef.onSnapshot(snapShot =>{
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          })
-
+          if(userAuth){
+            const userRef = await createUserProfileDocument(userAuth)
+           
+            userRef.onSnapshot(snapShot =>{
+              setCurrentUser({
+                id: snapShot.id,
+                ...snapShot.data()
+              })
+    
+            })
+          }
+          setCurrentUser(userAuth)
         })
-      }
-      setCurrentUser(userAuth)
-    })
-  }
 
-  componentWillUnmount(){
-    this.unsuscribeFromAuth()
-  }
+  },[setCurrentUser])
 
-  render()
-  {
+
     return (
       <div>
         <Header></Header>
@@ -52,7 +43,7 @@ class  App extends React.Component{
           <Route exact path="/signin" 
                   render = {
                     ()=>(
-                      this.props.currentUser ? 
+                      currentUser ? 
                       (<Redirect to='/'/>):
                       (<SignInAndSignUpPage/>) 
                     )
@@ -66,7 +57,6 @@ class  App extends React.Component{
         </Switch>
       </div>
     );
-  }
   
 }
 
