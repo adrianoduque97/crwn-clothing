@@ -5,13 +5,11 @@ import {connect} from 'react-redux'
 import { setCurrentUser } from './redux/user/user.action'
 import {selectCurrentUser} from './redux/user/user.selectors'
 
-//import HomePage from './pages/homepage/homepage.component'
-//import ShopPage from './pages/shop/shop.component'
-//import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
-//import CheckOutPage from './pages/checkout/checkout.component'
 import Spinner from './components/spinner/spinner.component'
 import Header from './components/header/header.component'
 import {auth , createUserProfileDocument} from './firebase/firebase.utils'
+
+import BoundaryError from './components/error-boundary/error-boundary.component'
 
 const ShopPage = lazy (() => import('./pages/shop/shop.component'))
 const HomePage = lazy (() => import('./pages/homepage/homepage.component'))
@@ -44,7 +42,8 @@ const  App = ({setCurrentUser, currentUser}) =>{
       <div>
         <Header></Header>
         <Switch>
-        <Suspense fallback={<Spinner></Spinner>}> 
+          <BoundaryError>
+          <Suspense fallback={<Spinner/>}> 
           <Route exact path='/' component= {HomePage}></Route>        
           <Route exact path="/signin" 
                   render = {
@@ -58,9 +57,9 @@ const  App = ({setCurrentUser, currentUser}) =>{
           </Route>
           <Route path="/shop" component={ShopPage}/>
           <Route exact path='/checkout' component={CheckOutPage}/>
-          <Route component={HomePage} ></Route>
           </Suspense>
           
+          </BoundaryError>
         </Switch>
       </div>
     );
