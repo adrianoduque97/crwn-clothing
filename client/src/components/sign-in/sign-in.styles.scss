@@ -2,6 +2,9 @@
     width: 420px;
     display: flex;
     flex-direction: column;
+    @media screen and (max-width: 800px) {
+        width: unset;
+    }
 
     .title{
         margin: 10px 0;
@@ -10,5 +13,8 @@
     .buttons{
         display: flex;
         justify-content: space-between;
+        @media screen and (max-width: 800px) {
+            font-size: 10px;
     }
+}
 }
